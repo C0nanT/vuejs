@@ -1,17 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
 import { useSettingsStore } from "../stores/settings";
 import ItemCard from "../components/ItemCard.vue";
 import ItemModal from "../components/ItemModal.vue";
 import { apiService } from "../services/api";
 import AppHeader from "../components/AppHeader.vue";
+import type { Item, FormState } from "../types";
 
 const settings = useSettingsStore();
 
-const items = ref([]);
+const items = ref<Item[]>([]);
 const isLoading = ref(false);
 const isModalOpen = ref(false);
-const itemToEdit = ref(null);
+const itemToEdit = ref<Item | null>(null);
 
 const loadItems = async () => {
 	isLoading.value = true;
@@ -38,11 +39,14 @@ const closeModal = () => {
 	isModalOpen.value = false;
 };
 
-const saveItem = async (formData) => {
+const saveItem = async (formData: FormState) => {
 	isLoading.value = true;
 	try {
 		if (itemToEdit.value) {
-			const updated = await apiService.updateItem(formData);
+			const updated = await apiService.updateItem({
+				...itemToEdit.value,
+				...formData
+			} as Item);
 			const index = items.value.findIndex((i) => i.id === updated.id);
 			if (index !== -1) {
 				items.value[index] = updated;

@@ -1,14 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { Pencil, Trash2 } from "lucide-vue-next";
+import type { Item } from "../types";
 
-defineProps({
-	item: {
-		type: Object,
-		required: true,
-	},
-});
+defineProps<{
+	item: Item;
+}>();
 
-defineEmits(["edit", "remove"]);
+defineEmits<{
+	(e: "edit", item: Item): void;
+	(e: "remove", id: number): void;
+}>();
 </script>
 
 <template>

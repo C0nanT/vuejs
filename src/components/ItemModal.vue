@@ -1,17 +1,22 @@
-<script setup>
+<script setup lang="ts">
 import { reactive, watch, computed } from "vue";
+import type { Item, FormState } from "../types";
 
-const props = defineProps({
-	isOpen: Boolean,
-	itemToEdit: Object, // null if adding new
-});
+const props = defineProps<{
+	isOpen: boolean;
+	itemToEdit: Item | null;
+}>();
 
-const emit = defineEmits(["close", "save"]);
+const emit = defineEmits<{
+	(e: "close"): void;
+	(e: "save", form: FormState): void;
+}>();
 
-const form = reactive({
+const form = reactive<FormState>({
 	id: null,
 	name: "",
 	description: "",
+	category: "Frontend",
 });
 
 const errors = reactive({

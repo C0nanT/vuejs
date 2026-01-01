@@ -1,12 +1,13 @@
 import { initialItems } from "../data/mockItems";
+import type { Item, GetItemsParams, GetItemsResponse } from "../types";
 
 // Simulando um banco de dados em memória
-let data = [...initialItems];
+let data: Item[] = [...initialItems];
 
-const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number = 500) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const apiService = {
-	async getItems(params = {}) {
+	async getItems(params: GetItemsParams = {}): Promise<GetItemsResponse> {
 		await delay();
 		let filteredData = [...data];
 
@@ -45,9 +46,9 @@ export const apiService = {
 		};
 	},
 
-	async addItem(item) {
+	async addItem(item: Omit<Item, 'id' | 'createdAt'>): Promise<Item> {
 		await delay();
-		const newItem = {
+		const newItem: Item = {
 			...item,
 			id: Date.now(),
 			createdAt: new Date().toISOString()
@@ -56,7 +57,7 @@ export const apiService = {
 		return newItem;
 	},
 
-	async updateItem(updatedItem) {
+	async updateItem(updatedItem: Item): Promise<Item> {
 		await delay();
 		const index = data.findIndex(i => i.id === updatedItem.id);
 		if (index !== -1) {
@@ -66,7 +67,7 @@ export const apiService = {
 		throw new Error("Item não encontrado");
 	},
 
-	async deleteItem(id) {
+	async deleteItem(id: number): Promise<{ success: boolean }> {
 		await delay();
 		data = data.filter(i => i.id !== id);
 		return { success: true };
