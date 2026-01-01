@@ -1,4 +1,4 @@
-/* Animations */
+/* Global Animations */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -17,25 +17,4 @@
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
-
-/* Loading state */
-.loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.spinner {
-  border: 4px solid var(--glass-border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  animation: spin 0.8s linear infinite;
 }

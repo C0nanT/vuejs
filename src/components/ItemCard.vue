@@ -35,3 +35,45 @@ defineEmits(["edit", "remove"]);
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.item-card {
+	background: var(--card-bg);
+	backdrop-filter: blur(12px);
+	border: 1px solid var(--glass-border);
+	border-radius: 16px;
+	padding: 1.5rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 1.5rem;
+	transition: all 0.3s ease;
+	animation: slideUp 0.5s ease backwards;
+}
+
+.item-card:hover {
+	border-color: var(--primary);
+	transform: scale(1.02);
+	background: rgba(30, 41, 59, 0.9);
+}
+
+.item-info {
+	flex-grow: 1;
+}
+
+.item-name {
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin-bottom: 0.25rem;
+}
+
+.item-desc {
+	color: var(--text-muted);
+	font-size: 0.9rem;
+}
+
+.item-actions {
+	display: flex;
+	gap: 0.75rem;
+}
+</style>

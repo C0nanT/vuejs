@@ -27,3 +27,11 @@ defineEmits(["add"]);
 		</div>
 	</header>
 </template>
+
+<style scoped>
+.header-actions {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 2rem;
+}
+</style>

@@ -107,3 +107,49 @@ const removeItem = async (id) => {
 	</div>
 </template>
 
+<style scoped>
+#app {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 3rem 1rem;
+}
+
+main {
+	position: relative;
+	min-height: 200px;
+}
+
+.items-list {
+	display: grid;
+	gap: 1.5rem;
+}
+
+.empty-state {
+	text-align: center;
+	padding: 3rem 1.5rem;
+	color: var(--text-muted);
+	border: 2px dashed var(--glass-border);
+	border-radius: 24px;
+	background: var(--card-bg);
+}
+
+.loading-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(15, 23, 42, 0.7);
+	backdrop-filter: blur(8px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+}
+
+.spinner {
+	border: 4px solid var(--glass-border);
+	border-top-color: var(--primary);
+	border-radius: 50%;
+	width: 2.5rem;
+	height: 2.5rem;
+	animation: spin 0.8s linear infinite;
+}
+</style>
