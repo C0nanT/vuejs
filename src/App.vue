@@ -1,34 +1,31 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import AppHeader from "./components/AppHeader.vue";
 import ItemCard from "./components/ItemCard.vue";
 import ItemModal from "./components/ItemModal.vue";
+import { apiService } from "./services/api";
 
-// State
-const items = ref([
-	{
-		id: 1,
-		name: "Componentização",
-		description: "Aprender a dividir a interface em pedaços menores.",
-	},
-	{
-		id: 2,
-		name: "Props",
-		description: "Passar dados do pai para o filho.",
-	},
-	{
-		id: 3,
-		name: "Emit",
-		description: "Enviar eventos do filho para o pai.",
-	},
-]);
-
+const items = ref([]);
+const isLoading = ref(false);
 const isModalOpen = ref(false);
 const itemToEdit = ref(null);
 
-// Actions
+const loadItems = async () => {
+	isLoading.value = true;
+	try {
+		const response = await apiService.getItems({ limit: 5 });
+		items.value = response.data;
+	} catch (error) {
+		console.error("Erro ao carregar itens:", error);
+	} finally {
+		isLoading.value = false;
+	}
+};
+
+onMounted(loadItems);
+
 const openModal = (item = null) => {
-	itemToEdit.value = item;
+	itemToEdit.value = item ? { ...item } : null;
 	isModalOpen.value = true;
 };
 
@@ -36,20 +33,39 @@ const closeModal = () => {
 	isModalOpen.value = false;
 };
 
-const saveItem = (formData) => {
-	if (itemToEdit.value) {
-		const index = items.value.findIndex((i) => i.id === formData.id);
-		if (index !== -1) {
-			items.value[index] = formData;
+const saveItem = async (formData) => {
+	isLoading.value = true;
+	try {
+		if (itemToEdit.value) {
+			const updated = await apiService.updateItem(formData);
+			const index = items.value.findIndex((i) => i.id === updated.id);
+			if (index !== -1) {
+				items.value[index] = updated;
+			}
+		} else {
+			const newItem = await apiService.addItem(formData);
+			items.value.unshift(newItem);
 		}
-	} else {
-		items.value.push(formData);
+		closeModal();
+	} catch (error) {
+		console.error("Erro ao salvar item:", error);
+	} finally {
+		isLoading.value = false;
 	}
-	closeModal();
 };
 
-const removeItem = (id) => {
-	items.value = items.value.filter((item) => item.id !== id);
+const removeItem = async (id) => {
+	if (confirm("Tem certeza que deseja remover este item?")) {
+		isLoading.value = true;
+		try {
+			await apiService.deleteItem(id);
+			items.value = items.value.filter((item) => item.id !== id);
+		} catch (error) {
+			console.error("Erro ao remover item:", error);
+		} finally {
+			isLoading.value = false;
+		}
+	}
 };
 </script>
 
@@ -58,8 +74,15 @@ const removeItem = (id) => {
 		<AppHeader @add="openModal" />
 
 		<main>
-			<div v-if="items.length > 0" class="items-list">
-				<h3>Total de itens: {{ items.length }}</h3>
+			<!-- if loading -->
+			<!-- else if items.length > 0 -->
+			<!-- else -->
+			<div v-if="isLoading" class="loading-overlay">
+				<!-- spinner -->
+				<div class="spinner"></div>	
+			</div>
+			<div v-else-if="items.length > 0" class="items-list">
+				<h3>Total de itens exibidos: {{ items.length }}</h3>
 				
 				<ItemCard 
 					v-for="item in items" 
@@ -69,10 +92,10 @@ const removeItem = (id) => {
 					@remove="removeItem"
 				/>
 			</div>
-
 			<div v-else class="empty-state">
 				<p>Nenhum item encontrado. Adicione um novo para começar!</p>
 			</div>
+			<!-- end if -->
 		</main>
 
 		<ItemModal 
