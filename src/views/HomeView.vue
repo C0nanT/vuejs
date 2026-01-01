@@ -30,7 +30,6 @@ watch(() => settings.itemsPerPage, loadItems);
 onMounted(loadItems);
 
 const openModal = (item = null) => {
-	console.log("openModal", item);
 	itemToEdit.value = item ? { ...item } : null;
 	isModalOpen.value = true;
 };
@@ -80,7 +79,7 @@ const removeItem = async (id) => {
 		<AppHeader />
 		<div class="view-header">
 			<h2>Sua Lista de Itens</h2>
-			<button class="btn btn-primary" @click="openModal">
+			<button class="btn btn-primary" @click="openModal()">
 				+ Novo Item
 			</button>
 		</div>
