@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useSettingsStore } from "../stores/settings";
-import { User, List } from "lucide-vue-next";
+import { User, List, SettingsIcon } from "lucide-vue-next";
 import AppSelect from "../components/AppSelect.vue";
 
 const settings = useSettingsStore();
@@ -35,7 +35,8 @@ const itemsPerPageOptions = [
 	<div class="view-container">
 
 		<div class="view-header">
-			<h2>Configurações</h2>
+			<SettingsIcon :size="20" />
+			<span class="view-title"><strong>Configurações</strong></span>
 		</div>
 
 		<hr class="header-separator">
@@ -170,5 +171,10 @@ const itemsPerPageOptions = [
 	transform: translateX(24px);
 }
 
+.view-title {
+	font-size: 1.5rem;
+	font-weight: 600;
+	margin-left: 1rem;
+}
 </style>
 
