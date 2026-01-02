@@ -1,14 +1,38 @@
 <script setup lang="ts">
+import { ref, watch } from "vue";
 import { useSettingsStore } from "../stores/settings";
 import { User, Moon, Sun, List } from "lucide-vue-next";
-
+import AppSelect from "../components/AppSelect.vue";
 
 const settings = useSettingsStore();
+const showSuccessBorder = ref(false);
+const showSuccessInterface = ref(false);
+const isInterfaceDropdownOpen = ref(false);
+
+watch(() => settings.userName, () => {
+	showSuccessBorder.value = true;
+	setTimeout(() => {
+		showSuccessBorder.value = false;
+	}, 2000);
+});
+
+watch(() => settings.itemsPerPage, () => {
+	showSuccessInterface.value = true;
+	setTimeout(() => {
+		showSuccessInterface.value = false;
+	}, 2000);
+});
 
 const toggleTheme = () => {
 	const newTheme = settings.theme === "dark" ? "light" : "dark";
 	settings.setTheme(newTheme);
 };
+
+const itemsPerPageOptions = [
+	{ label: "5 itens", value: 5 },
+	{ label: "10 itens", value: 10 },
+	{ label: "20 itens", value: 20 },
+];
 </script>
 
 <template>
@@ -31,9 +55,10 @@ const toggleTheme = () => {
 					<div class="form-group">
 						<label>Nome do Usuário</label>
 						<input 
-							v-model="settings.userName" 
+							v-model.lazy="settings.userName" 
 							type="text" 
 							class="form-input"
+							:class="{ 'input-success': showSuccessBorder }"
 							placeholder="Seu nome"
 							style="margin-top: 0.25rem;"
 						>
@@ -42,7 +67,7 @@ const toggleTheme = () => {
 			</section>
 
 			<!-- Preferências de Lista -->
-			<section class="settings-section">
+			<section class="settings-section" :class="{ 'has-open-dropdown': isInterfaceDropdownOpen }">
 				<div class="section-icon">
 					<List :size="20" />
 				</div>
@@ -50,15 +75,13 @@ const toggleTheme = () => {
 					<h3>Preferências de Interface</h3>
 					<div class="form-group">
 						<label>Itens por Página na Home</label>
-						<select 
+						<AppSelect 
 							v-model="settings.itemsPerPage" 
-							class="form-input"
+							:options="itemsPerPageOptions"
+							:class="{ 'input-success': showSuccessInterface }"
 							style="margin-top: 0.25rem;"
-						>
-							<option :value="5">5 itens</option>
-							<option :value="10">10 itens</option>
-							<option :value="20">20 itens</option>
-						</select>
+							@toggle="isInterfaceDropdownOpen = $event"
+						/>
 					</div>
 				</div>
 			</section>
@@ -104,6 +127,12 @@ const toggleTheme = () => {
 	border: 1px solid var(--glass-border);
 	border-radius: 20px;
 	backdrop-filter: blur(10px);
+	position: relative;
+	z-index: 1;
+}
+
+.settings-section.has-open-dropdown {
+	z-index: 50;
 }
 
 .section-icon {
@@ -163,4 +192,6 @@ const toggleTheme = () => {
 .theme-toggle.active .toggle-dot {
 	transform: translateX(24px);
 }
+
 </style>
+

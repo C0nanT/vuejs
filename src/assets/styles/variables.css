@@ -13,6 +13,7 @@
   --text-muted: #94a3b8;
   --glass-border: rgba(255, 255, 255, 0.1);
   --sidebar-bg: rgba(15, 23, 42, 0.8);
+  --input-bg: #0e1725;
   
   font-family: 'Outfit', sans-serif;
   color-scheme: dark;
@@ -26,6 +27,7 @@
   --text-muted: #475569;
   --glass-border: rgba(0, 0, 0, 0.05);
   --sidebar-bg: rgba(241, 245, 249, 0.9);
+  --input-bg: #ffffff;
   color-scheme: light;
 }
 
