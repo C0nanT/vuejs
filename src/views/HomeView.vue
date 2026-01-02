@@ -7,6 +7,7 @@ import ItemModal from "../components/ItemModal.vue";
 import { apiService } from "../services/api";
 import AppHeader from "../components/AppHeader.vue";
 import type { Item, FormState } from "../types";
+import ModalConfirm from "../components/ModalConfirm.vue";
 
 const settings = useSettingsStore();
 const toast = useToast();
@@ -15,6 +16,8 @@ const items = ref<Item[]>([]);
 const isLoading = ref(false);
 const isModalOpen = ref(false);
 const itemToEdit = ref<Item | null>(null);
+const itemToDelete = ref<Item | null>(null);
+const isModalConfirmOpen = ref(false);
 
 const loadItems = async () => {
 	isLoading.value = true;
@@ -38,8 +41,18 @@ const openModal = (item: Item | null = null) => {
 	isModalOpen.value = true;
 };
 
+const openModalConfirm = (item: Item) => {
+	itemToDelete.value = item;
+	isModalConfirmOpen.value = true;
+};
+
 const closeModal = () => {
 	isModalOpen.value = false;
+};
+
+const closeModalConfirm = () => {
+	isModalConfirmOpen.value = false;
+	itemToDelete.value = null;
 };
 
 const saveItem = async (formData: FormState) => {
@@ -65,23 +78,25 @@ const saveItem = async (formData: FormState) => {
 		console.error("Erro ao salvar item:", error);
 		toast.error("Erro ao salvar o item. Verifique os dados.");
 	} finally {
-		isLoading.value = false;
+		isLoading.value = false
 	}
 };
 
-const removeItem = async (id: number) => {
-	if (confirm("Tem certeza que deseja remover este item?")) {
-		isLoading.value = true;
-		try {
-			await apiService.deleteItem(id);
-			items.value = items.value.filter((item) => item.id !== id);
-			toast.success("Item removido com sucesso!");
-		} catch (error) {
-			console.error("Erro ao remover item:", error);
-			toast.error("Erro ao remover o item.");
-		} finally {
-			isLoading.value = false;
-		}
+const removeItem = async () => {
+	if (!itemToDelete.value) return;
+
+	const id = itemToDelete.value.id;
+	isLoading.value = true;
+	try {
+		await apiService.deleteItem(id);
+		items.value = items.value.filter((item) => item.id !== id);
+		toast.success("Item removido com sucesso!");
+	} catch (error) {
+		console.error("Erro ao remover item:", error);
+		toast.error("Erro ao remover o item.");
+	} finally {
+		isLoading.value = false;
+		closeModalConfirm();
 	}
 };
 
@@ -108,7 +123,7 @@ const removeItem = async (id: number) => {
 					:key="item.id" 
 					:item="item"
 					@edit="openModal"
-					@remove="removeItem"
+					@remove="openModalConfirm"
 				/>
 			</div>
 			
@@ -122,6 +137,14 @@ const removeItem = async (id: number) => {
 			:item-to-edit="itemToEdit"
 			@close="closeModal"
 			@save="saveItem"
+		/>	
+
+		<ModalConfirm 
+			:is-open="isModalConfirmOpen"
+			title="Remover Item"
+			:message="`Tem certeza que deseja remover o item '${itemToDelete?.name}'?`"
+			@close="closeModalConfirm"
+			@confirm="removeItem"
 		/>
 	</div>
 </template>

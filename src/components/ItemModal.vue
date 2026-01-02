@@ -54,7 +54,7 @@ const isFormValid = computed(() => {
 	return form.name.length >= 3 && form.description.length >= 5;
 });
 
-const validateField = (field) => {
+const validateField = (field: string) => {
 	if (field === 'name') {
 		errors.name = form.name.length < 3 ? "O nome deve ter pelo menos 3 caracteres." : "";
 	}

@@ -8,7 +8,7 @@ defineProps<{
 
 defineEmits<{
 	(e: "edit", item: Item): void;
-	(e: "remove", id: number): void;
+	(e: "remove", item: Item): void;
 }>();
 </script>
 
@@ -28,7 +28,7 @@ defineEmits<{
 			</button>
 			<button 
 				class="btn btn-danger btn-icon" 
-				@click="$emit('remove', item.id)"
+				@click="$emit('remove', item)"
 				title="Remover item"
 			>
 				<Trash2 :size="18" />
