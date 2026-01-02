@@ -34,17 +34,36 @@ async function connectDB() {
 // GET /api/items
 app.get('/api/items', async (req, res) => {
   try {
-    const { search, sortBy, order = 'asc', page = '1', limit = '10' } = req.query;
+    const {
+		search,
+		sortBy,
+		order = "asc",
+		page = "1",
+		limit = "10",
+		tags,
+	} = req.query;
     
     let query: any = {};
+    const conditions: any[] = [];
+    
     if (search) {
-      query = {
-        $or: [
-          { name: { $regex: search, $options: 'i' } },
-          { description: { $regex: search, $options: 'i' } }
-        ]
-      };
-    }
+		conditions.push({
+			$or: [
+				{ name: { $regex: search, $options: "i" } },
+				{ description: { $regex: search, $options: "i" } },
+			],
+		});
+	}
+
+	// Filter by tags
+	if (tags) {
+		const tagArray = Array.isArray(tags) ? tags : [tags];
+		conditions.push({ tags: { $in: tagArray } });
+	}
+
+	if (conditions.length > 0) {
+		query = { $and: conditions };
+	}
 
     const sortField = sortBy as string;
     const sortOrder = order === 'asc' ? 1 : -1;

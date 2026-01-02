@@ -13,11 +13,15 @@ export const apiService = {
 			url.searchParams.append("page", params.page.toString());
 		if (params.limit)
 			url.searchParams.append("limit", params.limit.toString());
+		if (params.tags && params.tags.length > 0) {
+			params.tags.forEach(tag => url.searchParams.append('tags', tag));
+		}
 
 		const response = await fetch(url.toString());
 		if (!response.ok) throw new Error("Erro ao buscar itens");
 		return response.json();
 	},
+
 
 	async addItem(item: Omit<Item, "id" | "createdAt">): Promise<Item> {
 		const response = await fetch(API_URL, {

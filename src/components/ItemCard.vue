@@ -17,6 +17,9 @@ defineEmits<{
 		<div class="item-info">
 			<h3 class="item-name">{{ item.name }}</h3>
 			<p class="item-desc">{{ item.description }}</p>
+			<div v-if="item.tags && item.tags.length > 0" class="item-tags">
+				<span v-for="tag in item.tags" :key="tag" class="tag">{{ tag }}</span>
+			</div>
 		</div>
 		<div class="item-actions">
 			<button 
@@ -78,5 +81,21 @@ defineEmits<{
 .item-actions {
 	display: flex;
 	gap: 0.75rem;
+}
+
+.item-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin-top: 0.5rem;
+}
+
+.tag {
+	padding: 0.25rem 0.6rem;
+	background: var(--primary);
+	color: white;
+	border-radius: 10px;
+	font-size: 0.75rem;
+	font-weight: 500;
 }
 </style>

@@ -17,6 +17,7 @@ const form = reactive<FormState>({
 	name: "",
 	description: "",
 	category: "Frontend",
+	tags: [],
 });
 
 const errors = reactive({
@@ -41,10 +42,14 @@ watch(
 			form.id = newItem.id;
 			form.name = newItem.name;
 			form.description = newItem.description;
+			form.category = newItem.category;
+			form.tags = newItem.tags || [];
 		} else {
 			form.id = Date.now();
 			form.name = "";
 			form.description = "";
+			form.category = "Frontend";
+			form.tags = [];
 		}
 	},
 	{ immediate: true }
@@ -82,6 +87,18 @@ const handleSave = () => {
 		emit("save", { ...form });
 	}
 };
+
+const availableTags = ["estudo", "configs", "trabalho", "pessoal", "urgente", "projeto"];
+
+const toggleTag = (tag: string) => {
+	const index = form.tags.indexOf(tag);
+	if (index > -1) {
+		form.tags.splice(index, 1);
+	} else {
+		form.tags.push(tag);
+	}
+};
+
 </script>
 
 <template>
@@ -115,6 +132,27 @@ const handleSave = () => {
 					@blur="touched.description = true; validateField('description')"
 				></textarea>
 				<span v-if="errors.description" class="error-message">{{ errors.description }}</span>
+			</div>
+
+			<div class="form-group">
+				<label>Tags</label>
+				<div class="tags-container">
+					<button
+						v-for="tag in availableTags"
+						:key="tag"
+						type="button"
+						class="tag-button"
+						:class="{ 'tag-selected': form.tags.includes(tag) }"
+						@click="toggleTag(tag)"
+					>
+						{{ tag }}
+					</button>
+				</div>
+				<div v-if="form.tags.length > 0" class="selected-tags">
+					<span v-for="tag in form.tags" :key="tag" class="tag-chip">
+						{{ tag }}
+					</span>
+				</div>
 			</div>
 
 			<div class="modal-footer">
@@ -193,5 +231,49 @@ const handleSave = () => {
 .btn-primary:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
+}
+
+.tags-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 0.75rem;
+}
+
+.tag-button {
+	padding: 0.4rem 0.8rem;
+	border: 1px solid var(--glass-border);
+	background: var(--input-bg);
+	color: var(--text-muted);
+	border-radius: 12px;
+	cursor: pointer;
+	font-size: 0.875rem;
+	transition: all 0.2s;
+}
+
+.tag-button:hover {
+	border-color: var(--primary);
+	color: var(--primary);
+}
+
+.tag-button.tag-selected {
+	background: var(--primary);
+	color: white;
+	border-color: var(--primary);
+}
+
+.selected-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.tag-chip {
+	padding: 0.3rem 0.7rem;
+	background: var(--primary);
+	color: white;
+	border-radius: 12px;
+	font-size: 0.75rem;
+	font-weight: 500;
 }
 </style>

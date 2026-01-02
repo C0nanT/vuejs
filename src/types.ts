@@ -1,26 +1,29 @@
 export interface Item {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-  createdAt: string;
+	id: number;
+	name: string;
+	description: string;
+	category: string;
+	tags: string[];
+	createdAt: string;
 }
 
 export interface FormState {
-  id: number | null;
-  name: string;
-  description: string;
-  category: string;
+	id: number | null;
+	name: string;
+	description: string;
+	category: string;
+	tags: string[];
 }
 
 export type SortOrder = 'asc' | 'desc';
 
 export interface GetItemsParams {
-  search?: string;
-  sortBy?: keyof Item;
-  order?: SortOrder;
-  page?: number;
-  limit?: number;
+	search?: string;
+	sortBy?: keyof Item;
+	order?: SortOrder;
+	page?: number;
+	limit?: number;
+	tags?: string[];
 }
 
 export interface GetItemsResponse {
