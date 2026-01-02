@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive, watch, computed } from "vue";
 import type { Item, FormState } from "../types";
+import DatePicker from "./DatePicker.vue";
 
 const props = defineProps<{
 	isOpen: boolean;
@@ -150,19 +151,12 @@ const toggleTag = (tag: string) => {
 						{{ tag }}
 					</button>
 				</div>
-				<div v-if="form.tags.length > 0" class="selected-tags">
-					<span v-for="tag in form.tags" :key="tag" class="tag-chip">
-						{{ tag }}
-					</span>
-				</div>
 			</div>
 
 			<div class="form-group">
 				<label>Data Limite <small>(opcional)</small></label>
-				<input
+				<DatePicker
 					v-model="form.dueDate"
-					type="date"
-					class="form-input"
 					placeholder="Selecione uma data"
 				/>
 			</div>

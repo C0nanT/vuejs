@@ -68,10 +68,55 @@ h1 {
 	outline: none;
 	transition: all 0.3s ease;
 	box-sizing: border-box;
+	font-family: inherit;
+	min-height: 48px;
+	/* Ensure uniform height for all inputs */
+	appearance: none;
+	/* Reset native appearance */
+}
+
+/* Hover effect for all inputs to match system interactivity */
+.form-input:hover {
+	border-color: var(--text-muted);
+	/* Subtle highlight on hover */
 }
 
 .form-input:focus {
-  border-color: var(--primary);
+	border-color: var(--primary);
+	box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+.form-input[type="date"] {
+	font-family: inherit;
+	color-scheme: inherit;
+	cursor: pointer;
+	/* Entire input clickable */
+	display: flex;
+	align-items: center;
+}
+
+/* Customize the calendar icon */
+.form-input[type="date"]::-webkit-calendar-picker-indicator {
+	cursor: pointer;
+	opacity: 0.6;
+	filter: invert(0);
+	/* Default for light mode or if color-scheme handles it */
+	transition: all 0.2s ease;
+	padding: 4px;
+	border-radius: 6px;
+}
+
+/* In dark mode we might need to invert if color-scheme isn't sufficient */
+@media (prefers-color-scheme: dark) {
+	/* Checks system pref, but we rely on class/vars better. 
+     Since variables.css sets color-scheme: dark on :root, 
+     the browser SHOULD handle white icon automatically.
+     But we can force filter if needed. */
+}
+
+.form-input[type="date"]::-webkit-calendar-picker-indicator:hover {
+	opacity: 1;
+	background: var(--hover-bg);
+	/* Use system hover background */
 }
 .input-success {
 	border-color: #10b981 !important;
