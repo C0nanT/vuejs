@@ -140,6 +140,9 @@ const selectedLabel = computed(() => {
 	list-style: none;
 	z-index: 100;
 	box-shadow: var(--shadow-lg);
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
 [data-theme="light"] .select-options {
@@ -186,4 +189,5 @@ const selectedLabel = computed(() => {
 	opacity: 0;
 	transform: translateY(-10px) scaleY(0.95);
 }
+
 </style>

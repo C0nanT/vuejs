@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from "vue";
 import { useToast } from "vue-toastification";
 import { useSettingsStore } from "../stores/settings";
-import { Search, ArrowUpDown, ArrowUpAz, ArrowDownZa } from "lucide-vue-next";
+import { Search, ArrowUpDown, ArrowUpAz, ArrowDownZa, ArrowUp, ArrowDown } from "lucide-vue-next";
 import ItemCard from "../components/ItemCard.vue";
 import ItemModal from "../components/ItemModal.vue";
 import AppSelect from "../components/AppSelect.vue";
@@ -37,8 +37,7 @@ const isSortDropdownOpen = ref(false);
 
 const sortOptions = [
 	{ label: "Nome", value: "name" },
-	// { label: "Data", value: "createdAt" },
-	// { label: "Tipo", value: "type" },
+	{ label: "Vencimento", value: "dueDate" },
 ];
 
 const loadItems = async () => {
@@ -189,7 +188,7 @@ const removeItem = async () => {
 						@click="toggleSortOrder"
 						:title="sortOrder === 'asc' ? 'Ordem Crescente' : 'Ordem Decrescente'"
 					>
-						<component :is="sortOrder === 'asc' ? ArrowUpAz : ArrowDownZa" :size="20" />
+						<component :is="sortOrder === 'asc' ? ArrowUp : ArrowDown" :size="20" />
 					</button>
 				</div>
 

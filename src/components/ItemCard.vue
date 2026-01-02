@@ -38,7 +38,7 @@ const formatDate = (dateString: string) => {
 			<div v-if="item.dueDate" class="item-due-date" :class="{ 'overdue': isOverdue }">
 				<Calendar :size="14" />
 				<span>{{ formatDate(item.dueDate) }}</span>
-				<span v-if="isOverdue" class="overdue-badge">Vencido</span>
+				<span v-if="isOverdue" class="overdue-badge">Atrasado</span>
 			</div>
 		</div>
 		<div class="item-actions">
