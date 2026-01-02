@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
+import { useToast } from "vue-toastification";
 import { useSettingsStore } from "../stores/settings";
 import ItemCard from "../components/ItemCard.vue";
 import ItemModal from "../components/ItemModal.vue";
@@ -8,6 +9,7 @@ import AppHeader from "../components/AppHeader.vue";
 import type { Item, FormState } from "../types";
 
 const settings = useSettingsStore();
+const toast = useToast();
 
 const items = ref<Item[]>([]);
 const isLoading = ref(false);
@@ -21,6 +23,7 @@ const loadItems = async () => {
 		items.value = response.data;
 	} catch (error) {
 		console.error("Erro ao carregar itens:", error);
+		toast.error("Erro ao carregar os itens. Tente novamente.");
 	} finally {
 		isLoading.value = false;
 	}
@@ -30,7 +33,7 @@ watch(() => settings.itemsPerPage, loadItems);
 
 onMounted(loadItems);
 
-const openModal = (item = null) => {
+const openModal = (item: Item | null = null) => {
 	itemToEdit.value = item ? { ...item } : null;
 	isModalOpen.value = true;
 };
@@ -51,31 +54,37 @@ const saveItem = async (formData: FormState) => {
 			if (index !== -1) {
 				items.value[index] = updated;
 			}
+			toast.success("Item atualizado com sucesso!");
 		} else {
 			const newItem = await apiService.addItem(formData);
 			items.value.unshift(newItem);
+			toast.success("Item criado com sucesso!");
 		}
 		closeModal();
 	} catch (error) {
 		console.error("Erro ao salvar item:", error);
+		toast.error("Erro ao salvar o item. Verifique os dados.");
 	} finally {
 		isLoading.value = false;
 	}
 };
 
-const removeItem = async (id) => {
+const removeItem = async (id: number) => {
 	if (confirm("Tem certeza que deseja remover este item?")) {
 		isLoading.value = true;
 		try {
 			await apiService.deleteItem(id);
 			items.value = items.value.filter((item) => item.id !== id);
+			toast.success("Item removido com sucesso!");
 		} catch (error) {
 			console.error("Erro ao remover item:", error);
+			toast.error("Erro ao remover o item.");
 		} finally {
 			isLoading.value = false;
 		}
 	}
 };
+
 </script>
 
 <template>
