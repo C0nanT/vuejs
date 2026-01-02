@@ -6,6 +6,7 @@ import ItemCard from "../components/ItemCard.vue";
 import ItemModal from "../components/ItemModal.vue";
 import { apiService } from "../services/api";
 import AppHeader from "../components/AppHeader.vue";
+import AppLoading from "../components/AppLoading.vue";
 import type { Item, FormState } from "../types";
 import ModalConfirm from "../components/ModalConfirm.vue";
 
@@ -114,7 +115,7 @@ const removeItem = async () => {
 
 		<main>
 			<div v-if="isLoading" class="loading-overlay">
-				<div class="spinner"></div>	
+				<AppLoading />
 			</div>
 			
 			<div v-else-if="items.length > 0" class="items-list">
