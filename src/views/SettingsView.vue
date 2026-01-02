@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useSettingsStore } from "../stores/settings";
-import { User, Moon, Sun, List } from "lucide-vue-next";
+import { User, List } from "lucide-vue-next";
 import AppSelect from "../components/AppSelect.vue";
 
 const settings = useSettingsStore();
@@ -23,31 +23,13 @@ watch(() => settings.itemsPerPage, () => {
 	}, 2000);
 });
 
-const toggleTheme = (event: MouseEvent) => {
-	const x = event.clientX;
-	const y = event.clientY;
-	
-	const isSupported = (document as any).startViewTransition !== undefined;
-	
-	if (!isSupported) {
-		settings.setTheme(settings.theme === "dark" ? "light" : "dark");
-		return;
-	}
-
-	document.documentElement.style.setProperty("--x", `${x}px`);
-	document.documentElement.style.setProperty("--y", `${y}px`);
-
-	(document as any).startViewTransition(() => {
-		settings.setTheme(settings.theme === "dark" ? "light" : "dark");
-	});
-};
-
 const itemsPerPageOptions = [
 	{ label: "5 itens", value: 5 },
 	{ label: "10 itens", value: 10 },
 	{ label: "20 itens", value: 20 },
 ];
 </script>
+
 
 <template>
 	<div class="view-container">
@@ -96,25 +78,6 @@ const itemsPerPageOptions = [
 							style="margin-top: 0.25rem;"
 							@toggle="isInterfaceDropdownOpen = $event"
 						/>
-					</div>
-				</div>
-			</section>
-
-			<section class="settings-section">
-				<div class="section-icon">
-					<component :is="settings.theme === 'dark' ? Moon : Sun" :size="20" />
-				</div>
-				<div class="section-content">
-					<h3>Aparência</h3>
-					<div class="setting-row">
-						<span>Tema Escuro</span>
-						<button 
-							class="theme-toggle" 
-							:class="{ active: settings.theme === 'dark' }"
-							@click="toggleTheme"
-						>
-							<div class="toggle-dot"></div>
-						</button>
 					</div>
 				</div>
 			</section>

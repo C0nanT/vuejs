@@ -1,6 +1,28 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { Home, Settings as SettingsIcon, LayoutGrid } from "lucide-vue-next";
+import { Home, Settings as SettingsIcon, LayoutGrid, Sun, Moon } from "lucide-vue-next";
+import { useSettingsStore } from "../stores/settings";
+
+const settings = useSettingsStore();
+
+const toggleTheme = (event: MouseEvent) => {
+	const x = event.clientX;
+	const y = event.clientY;
+	
+	const isSupported = (document as any).startViewTransition !== undefined;
+	
+	if (!isSupported) {
+		settings.setTheme(settings.theme === "dark" ? "light" : "dark");
+		return;
+	}
+
+	document.documentElement.style.setProperty("--x", `${x}px`);
+	document.documentElement.style.setProperty("--y", `${y}px`);
+
+	(document as any).startViewTransition(() => {
+		settings.setTheme(settings.theme === "dark" ? "light" : "dark");
+	});
+};
 </script>
 
 <template>
@@ -24,10 +46,21 @@ import { Home, Settings as SettingsIcon, LayoutGrid } from "lucide-vue-next";
 		</nav>
 
 		<div class="sidebar-footer">
+			<div class="theme-switch-wrapper">
+				<button 
+					class="theme-toggle-btn" 
+					@click="toggleTheme"
+					:title="settings.theme === 'dark' ? 'Mudar para modo claro' : 'Mudar para modo escuro'"
+				>
+					<component :is="settings.theme === 'dark' ? Sun : Moon" :size="20" />
+					<span class="toggle-text">{{ settings.theme === 'dark' ? 'Modo Claro' : 'Modo Escuro' }}</span>
+				</button>
+			</div>
 			<div class="version">v1.0.0</div>
 		</div>
 	</aside>
 </template>
+
 
 <style scoped>
 .app-sidebar {
@@ -111,22 +144,55 @@ import { Home, Settings as SettingsIcon, LayoutGrid } from "lucide-vue-next";
 	text-align: center;
 }
 
+.theme-switch-wrapper {
+	margin-bottom: 1rem;
+	padding: 0 0.5rem;
+}
+
+.theme-toggle-btn {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 0.875rem 1rem;
+	background: var(--toggle-bg);
+	border: 1px solid var(--glass-border);
+	border-radius: 12px;
+	color: var(--text-main);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	font-weight: 500;
+	font-family: inherit;
+}
+
+.theme-toggle-btn:hover {
+	background: var(--hover-bg);
+	border-color: var(--primary);
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-sm);
+}
+
 @media (max-width: 768px) {
 	.app-sidebar {
 		width: 80px;
 	}
 	
-	.logo-text, .nav-link span, .version {
+	.logo-text, .nav-link span, .version, .toggle-text {
 		display: none;
 	}
 	
-	.nav-link {
+	.nav-link, .theme-toggle-btn {
 		justify-content: center;
 		padding: 1rem;
 	}
 	
+	.theme-switch-wrapper {
+		padding: 0;
+	}
+
 	.logo {
 		justify-content: center;
 	}
 }
+
 </style>
