@@ -2,7 +2,7 @@
 const props = defineProps<{
 	isOpen: boolean;
 	title: string;
-	message: string;
+	itemName: string;
 }>();
 
 const emit = defineEmits<{
@@ -20,17 +20,18 @@ const handleConfirm = () => {
 	<div v-if="isOpen" class="modal-overlay" @click.self="$emit('close')">
 		<div class="modal-content">
 			<h2 class="modal-title">{{ title }}</h2>
-			<p class="modal-message">{{ message }}</p>
+			<p class="modal-message">Tem certeza que deseja remover o seguinte item?</p>
+			<p class="modal-message"><strong>{{ itemName }}</strong></p>
 
 			<div class="modal-footer">
-				<button class="btn btn-ghost" @click="$emit('close')">
-					Cancelar
-				</button>
 				<button 
 					class="btn btn-danger" 
 					@click="handleConfirm"
 				>
 					Confirmar
+				</button>
+				<button class="btn btn-ghost" @click="$emit('close')">
+					Cancelar
 				</button>
 			</div>
 		</div>
@@ -53,7 +54,7 @@ const handleConfirm = () => {
 .modal-content {
 	background: #1e293b;
 	border: 1px solid var(--glass-border);
-	padding: 2.5rem;
+	padding: 2rem 2.5rem;
 	border-radius: 24px;
 	width: 90%;
 	max-width: 400px;
@@ -72,13 +73,13 @@ const handleConfirm = () => {
 	font-size: 1rem;
 	color: var(--text-muted);
 	line-height: 1.5;
-	margin-bottom: 2rem;
 }
 
 .modal-footer {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
 	gap: 1rem;
+	margin-top: 2rem;
 }
 
 .btn-danger {

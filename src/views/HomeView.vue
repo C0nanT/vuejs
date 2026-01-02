@@ -142,7 +142,7 @@ const removeItem = async () => {
 		<ModalConfirm 
 			:is-open="isModalConfirmOpen"
 			title="Remover Item"
-			:message="`Tem certeza que deseja remover o item '${itemToDelete?.name}'?`"
+			:itemName="`${itemToDelete?.name}`"
 			@close="closeModalConfirm"
 			@confirm="removeItem"
 		/>
