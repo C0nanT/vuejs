@@ -3,15 +3,35 @@
 :root {
   --primary: #8b5cf6;
   --primary-hover: #7c3aed;
+  --danger: #ef4444;
+  
+    /* Dark Theme (Default) */
   --bg-dark: #0f172a;
+  --bg-gradient: radial-gradient(circle at top right, #1e1b4b, #0f172a);
   --card-bg: rgba(30, 41, 59, 0.7);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --danger: #ef4444;
   --glass-border: rgba(255, 255, 255, 0.1);
+  --sidebar-bg: rgba(15, 23, 42, 0.8);
   
   font-family: 'Outfit', sans-serif;
   color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg-dark: #f8fafc;
+  --bg-gradient: radial-gradient(circle at top right, #e2e8f0, #f8fafc);
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --sidebar-bg: rgba(241, 245, 249, 0.9);
+  color-scheme: light;
+}
+
+body {
   background-color: var(--bg-dark);
   color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+

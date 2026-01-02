@@ -33,7 +33,7 @@ import { Home, Settings as SettingsIcon, LayoutGrid } from "lucide-vue-next";
 .app-sidebar {
 	width: 260px;
 	height: 100vh;
-	background: rgba(15, 23, 42, 0.8);
+	background: var(--sidebar-bg);
 	backdrop-filter: blur(20px);
 	border-right: 1px solid var(--glass-border);
 	display: flex;

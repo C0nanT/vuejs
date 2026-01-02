@@ -41,26 +41,6 @@ const toggleTheme = () => {
 				</div>
 			</section>
 
-			<!-- Aparência -->
-			<section class="settings-section">
-				<div class="section-icon">
-					<component :is="settings.theme === 'dark' ? Moon : Sun" :size="20" />
-				</div>
-				<div class="section-content">
-					<h3>Aparência</h3>
-					<div class="setting-row">
-						<span>Tema Escuro</span>
-						<button 
-							class="theme-toggle" 
-							:class="{ active: settings.theme === 'dark' }"
-							@click="toggleTheme"
-						>
-							<div class="toggle-dot"></div>
-						</button>
-					</div>
-				</div>
-			</section>
-
 			<!-- Preferências de Lista -->
 			<section class="settings-section">
 				<div class="section-icon">
@@ -79,6 +59,25 @@ const toggleTheme = () => {
 							<option :value="10">10 itens</option>
 							<option :value="20">20 itens</option>
 						</select>
+					</div>
+				</div>
+			</section>
+
+			<section class="settings-section">
+				<div class="section-icon">
+					<component :is="settings.theme === 'dark' ? Moon : Sun" :size="20" />
+				</div>
+				<div class="section-content">
+					<h3>Aparência</h3>
+					<div class="setting-row">
+						<span>Tema Escuro</span>
+						<button 
+							class="theme-toggle" 
+							:class="{ active: settings.theme === 'dark' }"
+							@click="toggleTheme"
+						>
+							<div class="toggle-dot"></div>
+						</button>
 					</div>
 				</div>
 			</section>
