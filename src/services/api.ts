@@ -1,75 +1,49 @@
-import { initialItems } from "../data/mockItems";
 import type { Item, GetItemsParams, GetItemsResponse } from "../types";
 
-// Simulando um banco de dados em memória
-let data: Item[] = [...initialItems];
-
-const delay = (ms: number = 500) => new Promise(resolve => setTimeout(resolve, ms));
+const API_URL = "http://localhost:3000/api/items";
 
 export const apiService = {
 	async getItems(params: GetItemsParams = {}): Promise<GetItemsResponse> {
-		await delay();
-		let filteredData = [...data];
+		const url = new URL(API_URL);
 
-		const { search, sortBy, order = "asc", page = 1, limit = 10 } = params;
+		if (params.search) url.searchParams.append("search", params.search);
+		if (params.sortBy) url.searchParams.append("sortBy", params.sortBy);
+		if (params.order) url.searchParams.append("order", params.order);
+		if (params.page)
+			url.searchParams.append("page", params.page.toString());
+		if (params.limit)
+			url.searchParams.append("limit", params.limit.toString());
 
-		// Busca (Search)
-		if (search) {
-			const query = search.toLowerCase();
-			filteredData = filteredData.filter(item => 
-				item.name.toLowerCase().includes(query) || 
-				item.description.toLowerCase().includes(query)
-			);
-		}
-
-		// Ordenação (Sorting)
-		if (sortBy) {
-			filteredData.sort((a, b) => {
-				const valA = a[sortBy];
-				const valB = b[sortBy];
-				if (order === "asc") return valA > valB ? 1 : -1;
-				return valA < valB ? 1 : -1;
-			});
-		}
-
-		// Paginação (Pagination)
-		const total = filteredData.length;
-		const startIndex = (page - 1) * limit;
-		const paginatedData = filteredData.slice(startIndex, startIndex + limit);
-
-		return {
-			data: paginatedData,
-			total,
-			page,
-			limit,
-			totalPages: Math.ceil(total / limit)
-		};
+		const response = await fetch(url.toString());
+		if (!response.ok) throw new Error("Erro ao buscar itens");
+		return response.json();
 	},
 
-	async addItem(item: Omit<Item, 'id' | 'createdAt'>): Promise<Item> {
-		await delay();
-		const newItem: Item = {
-			...item,
-			id: Date.now(),
-			createdAt: new Date().toISOString()
-		};
-		data.unshift(newItem); // Adiciona no início
-		return newItem;
+	async addItem(item: Omit<Item, "id" | "createdAt">): Promise<Item> {
+		const response = await fetch(API_URL, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(item),
+		});
+		if (!response.ok) throw new Error("Erro ao adicionar item");
+		return response.json();
 	},
 
 	async updateItem(updatedItem: Item): Promise<Item> {
-		await delay();
-		const index = data.findIndex(i => i.id === updatedItem.id);
-		if (index !== -1) {
-			data[index] = { ...data[index], ...updatedItem };
-			return data[index];
-		}
-		throw new Error("Item não encontrado");
+		const response = await fetch(`${API_URL}/${updatedItem.id}`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(updatedItem),
+		});
+		if (!response.ok) throw new Error("Erro ao atualizar item");
+		return response.json();
 	},
 
 	async deleteItem(id: number): Promise<{ success: boolean }> {
-		await delay();
-		data = data.filter(i => i.id !== id);
-		return { success: true };
-	}
+		const response = await fetch(`${API_URL}/${id}`, {
+			method: "DELETE",
+		});
+		if (!response.ok) throw new Error("Erro ao excluir item");
+		return response.json();
+	},
 };
