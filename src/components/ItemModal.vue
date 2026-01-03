@@ -268,6 +268,28 @@ const getPriorityClass = (priority: string) => {
 	max-width: 500px;
 	box-shadow: var(--shadow-lg);
 	animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	max-height: calc(100vh - 2rem);
+	overflow-y: auto;
+}
+
+.modal-content::-webkit-scrollbar {
+	width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+	background: transparent;
+	margin: 20px 0; /* Add margin to top and bottom of track */
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+	background: var(--glass-border);
+	border-radius: 4px;
+	border: 2px solid transparent; /* Simulate internal padding */
+	background-clip: content-box; /* Clip background to content box */
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+	background: var(--text-muted);
 }
 
 .modal-title {
@@ -377,5 +399,9 @@ const getPriorityClass = (priority: string) => {
 
 .form-input {
 	font-size: 1rem;
+}
+
+textarea.form-input {
+	resize: vertical;
 }
 </style>
