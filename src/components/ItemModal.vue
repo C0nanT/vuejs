@@ -22,6 +22,7 @@ const form = reactive<FormState>({
 	category: "Frontend",
 	tags: [],
 	priority: PRIORITY_MAP.Baixa,
+	done: false,
 });
 
 const errors = reactive({
@@ -49,6 +50,7 @@ watch(
 			form.category = newItem.category;
 			form.tags = newItem.tags || [];
 			form.dueDate = newItem.dueDate || undefined;
+			form.done = newItem.done;
 		} else {
 			form.id = Date.now();
 			form.name = "";
@@ -56,6 +58,7 @@ watch(
 			form.category = "Frontend";
 			form.tags = [];
 			form.dueDate = undefined;
+			form.done = false;
 		}
 	},
 	{ immediate: true }

@@ -7,6 +7,7 @@ export interface Item {
 	tags: string[];
 	dueDate?: string;
 	createdAt: string;
+	done: boolean;
 }
 
 export interface FormState {
@@ -17,6 +18,7 @@ export interface FormState {
 	priority: number;
 	tags: string[];
 	dueDate?: string;
+	done: boolean;
 }
 
 export type SortOrder = 'asc' | 'desc';

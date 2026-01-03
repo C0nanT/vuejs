@@ -68,6 +68,7 @@ const generateItems = (count: number = 50): Item[] => {
 			tags,
 			dueDate,
 			createdAt: new Date().toISOString(),
+			done: false,
 		});
 	}
 	return items;

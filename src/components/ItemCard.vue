@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { Pencil, Trash2, Calendar } from "lucide-vue-next";
+import { Pencil, Trash2, Calendar, CheckCircle } from "lucide-vue-next";
 import type { Item } from "../types";
 import { PRIORITY_MAP } from "../data/constants";
 
@@ -8,9 +8,10 @@ const props = defineProps<{
 	item: Item;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
 	(e: "edit", item: Item): void;
 	(e: "remove", item: Item): void;
+	(e: "toggleDone", item: Item): void;
 }>();
 
 const isOverdue = computed(() => {
@@ -40,12 +41,20 @@ const getPriorityLabel = (priority: number) => {
 	const entry = Object.entries(PRIORITY_MAP).find(([key, value]) => value === priority);
 	return entry ? entry[0] : 'Desconhecida';
 };
+
+const handleItemClick = (event: Event) => {
+	if ((event.target as HTMLElement).closest('.item-actions')) return;
+	emit('toggleDone', props.item);
+};
 </script>
 
 <template>
-	<div class="item-card">
+	<div class="item-card" :class="{ 'item-done': item.done }" @click="handleItemClick">
 		<div class="item-info">
-			<h3 class="item-name">{{ item.name }}</h3>
+			<div class="item-header">
+				<span class="item-name">{{ item.name }}</span>
+				<CheckCircle v-if="item.done" :size="20" class="check-icon" />
+			</div>
 			<p class="item-desc">{{ item.description }}</p>
 			<div v-if="item.tags && item.tags.length > 0" class="item-tags">
 				<span v-for="tag in item.tags" :key="tag" class="item-tag tag-label">{{ tag }}</span>
@@ -61,14 +70,14 @@ const getPriorityLabel = (priority: number) => {
 		<div class="item-actions">
 			<button 
 				class="btn btn-ghost btn-icon" 
-				@click="$emit('edit', item)"
+				@click.stop="emit('edit', item)"
 				title="Editar item"
 			>
 				<Pencil :size="18" />
 			</button>
 			<button 
 				class="btn btn-danger btn-icon" 
-				@click="$emit('remove', item)"
+				@click.stop="emit('remove', item)"
 				title="Remover item"
 			>
 				<Trash2 :size="18" />
@@ -166,6 +175,24 @@ const getPriorityLabel = (priority: number) => {
 	font-size: 0.75rem;
 	font-weight: 500;
 	width: fit-content;
+}
+
+.item-card.item-done {
+	border-color: #10b981;
+	background: rgba(16, 185, 129, 0.1);
+}
+
+.item-header {
+	display: flex;
+	justify-content: flex-start;
+	gap: 0.5rem;
+	align-items: center;
+	margin-bottom: 0.25rem;
+}
+
+.check-icon {
+	color: #10b981;
+	flex-shrink: 0;
 }
 
 .priority-low {

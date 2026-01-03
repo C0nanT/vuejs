@@ -111,6 +111,23 @@ const closeModalConfirm = () => {
 	itemToDelete.value = null;
 };
 
+const toggleDoneItem = async (item: Item) => {
+	try {
+		const updated = await apiService.updateItem({
+			...item,
+			done: !item.done
+		});
+		const index = items.value.findIndex((i) => i.id === updated.id);
+		if (index !== -1) {
+			items.value[index] = updated;
+		}
+		toast.success(item.done ? "Tarefa desmarcada!" : "Tarefa concluída!");
+	} catch (error) {
+		console.error("Erro ao atualizar tarefa:", error);
+		toast.error("Erro ao atualizar tarefa.");
+	}
+};
+
 const saveItem = async (formData: FormState) => {
 	isLoading.value = true;
 	try {
@@ -213,6 +230,7 @@ const removeItem = async () => {
 						:item="item"
 						@edit="openModal"
 						@remove="openModalConfirm"
+						@toggleDone="toggleDoneItem"
 					/>
 				</div>
 
