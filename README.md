@@ -4,7 +4,15 @@ Um sistema completo de gerenciamento de tarefas construído com **Vue 3**, **Exp
 
 ## ✨ Funcionalidades
 
-### 🎯 Gerenciamento de Tarefas
+### 📸 Screenshots
+
+### Tema Escuro
+![Theme Dark](./public/screenshots/theme-dark.png)
+
+### Tema Claro
+![Theme Light](./public/screenshots/theme-light.png)
+
+
 - ✅ **Criar tarefas** com nome, descrição, categoria, prioridade e tags
 - ✅ **Marcar como concluída** clicando na tarefa
 - ✅ **Editar tarefas** existentes
