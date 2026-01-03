@@ -1,5 +1,5 @@
 import type { Item } from "../types";
-import { ALL_PRIORITIES, ALL_TAGS } from "./constants";
+import { ALL_CATEGORIES, ALL_PRIORITIES, ALL_TAGS } from "./constants";
 
 // Função para gerar itens aleatórios
 const generateItems = (count: number = 50): Item[] => {
@@ -24,23 +24,17 @@ const generateItems = (count: number = 50): Item[] => {
 		"TypeScript",
 		"Unit Tests",
 	];
-	const categories = [
-		"Frontend",
-		"DevOps",
-		"Documentation",
-		"Testing",
-		"Backend",
-	];
 
+	const allCategories = [...ALL_CATEGORIES];
 	const allTags = [...ALL_TAGS];
-	const priorities = [...ALL_PRIORITIES];
+	const allPriorities = [...ALL_PRIORITIES];
 
 	const items: Item[] = [];
 	for (let i = 1; i <= count; i++) {
 		const title = titles[Math.floor(Math.random() * titles.length)];
 		const subject = subjects[Math.floor(Math.random() * subjects.length)];
 		const category =
-			categories[Math.floor(Math.random() * categories.length)];
+			allCategories[Math.floor(Math.random() * allCategories.length)];
 
 		// Gera 1-3 tags aleatórias
 		const numTags = Math.floor(Math.random() * 3) + 1;
@@ -62,7 +56,7 @@ const generateItems = (count: number = 50): Item[] => {
 
 		// Gera prioridade aleatória
 		const priority =
-			priorities[Math.floor(Math.random() * priorities.length)];
+			allPriorities[Math.floor(Math.random() * allPriorities.length)];
 
 		items.push({
 			id: i,
