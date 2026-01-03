@@ -154,7 +154,7 @@ const getPriorityClass = (priority: string) => {
 }
 
 .tag-label {
-	padding: 0.25rem 0.6rem;
+	padding: 0.3rem 0.7rem;
 	color: white;
 	border-radius: 10px;
 	font-size: 0.75rem;

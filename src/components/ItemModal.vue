@@ -66,28 +66,40 @@ const isFormValid = computed(() => {
 });
 
 const validateField = (field: string) => {
-	if (field === 'name') {
-		errors.name = form.name.length < 3 ? "O nome deve ter pelo menos 3 caracteres." : "";
+	if (field === "name") {
+		errors.name =
+			form.name.length < 3
+				? "O nome deve ter pelo menos 3 caracteres."
+				: "";
 	}
-	if (field === 'description') {
-		errors.description = form.description.length < 5 ? "A descrição deve ter pelo menos 5 caracteres." : "";
+	if (field === "description") {
+		errors.description =
+			form.description.length < 5
+				? "A descrição deve ter pelo menos 5 caracteres."
+				: "";
 	}
 };
 
 // Real-time validation
-watch(() => form.name, () => {
-	if (touched.name) validateField('name');
-});
+watch(
+	() => form.name,
+	() => {
+		if (touched.name) validateField("name");
+	}
+);
 
-watch(() => form.description, () => {
-	if (touched.description) validateField('description');
-});
+watch(
+	() => form.description,
+	() => {
+		if (touched.description) validateField("description");
+	}
+);
 
 const handleSave = () => {
 	touched.name = true;
 	touched.description = true;
-	validateField('name');
-	validateField('description');
+	validateField("name");
+	validateField("description");
 
 	if (isFormValid.value) {
 		emit("save", { ...form });
@@ -109,10 +121,14 @@ const toggleTag = (tag: string) => {
 
 const getPriorityClass = (priority: string) => {
 	switch (priority.toLowerCase()) {
-		case 'baixa': return 'priority-low';
-		case 'média': return 'priority-medium';
-		case 'alta': return 'priority-high';
-		default: return 'priority-default';
+		case "baixa":
+			return "priority-low";
+		case "média":
+			return "priority-medium";
+		case "alta":
+			return "priority-high";
+		default:
+			return "priority-default";
 	}
 };
 </script>
@@ -132,9 +148,14 @@ const getPriorityClass = (priority: string) => {
 					class="form-input"
 					:class="{ 'input-error': errors.name }"
 					placeholder="Ex: Aprender Vite"
-					@blur="touched.name = true; validateField('name')"
+					@blur="
+						touched.name = true;
+						validateField('name');
+					"
 				/>
-				<span v-if="errors.name" class="error-message">{{ errors.name }}</span>
+				<span v-if="errors.name" class="error-message">{{
+					errors.name
+				}}</span>
 			</div>
 
 			<div class="form-group">
@@ -145,15 +166,23 @@ const getPriorityClass = (priority: string) => {
 					:class="{ 'input-error': errors.description }"
 					rows="3"
 					placeholder="O que você vai fazer?"
-					@blur="touched.description = true; validateField('description')"
+					@blur="
+						touched.description = true;
+						validateField('description');
+					"
 				></textarea>
-				<span v-if="errors.description" class="error-message">{{ errors.description }}</span>
+				<span v-if="errors.description" class="error-message">{{
+					errors.description
+				}}</span>
 			</div>
 
 			<div class="form-group">
 				<label>Categoria</label>
-				<AppSelect v-model="form.category" :options="ALL_CATEGORIES.map(c => ({ label: c, value: c }))"
-					placeholder="Selecione uma categoria" />
+				<AppSelect
+					v-model="form.category"
+					:options="ALL_CATEGORIES.map((c) => ({ label: c, value: c }))"
+					placeholder="Selecione uma categoria"
+				/>
 			</div>
 
 			<div class="form-group">
@@ -182,7 +211,9 @@ const getPriorityClass = (priority: string) => {
 						class="tag-button"
 						:class="[
 							{ 'tag-selected': form.priority === priority },
-							form.priority === priority ? getPriorityClass(priority) : ''
+							form.priority === priority
+								? getPriorityClass(priority)
+								: '',
 						]"
 						@click="form.priority = priority"
 					>
@@ -203,8 +234,8 @@ const getPriorityClass = (priority: string) => {
 				<button class="btn btn-ghost" @click="$emit('close')">
 					Cancelar
 				</button>
-				<button 
-					class="btn btn-primary" 
+				<button
+					class="btn btn-primary"
 					:disabled="!isFormValid"
 					@click="handleSave"
 				>
@@ -252,7 +283,8 @@ const getPriorityClass = (priority: string) => {
 .form-group label {
 	display: block;
 	margin-bottom: 0.5rem;
-	font-size: 0.875rem;
+	font-size: 0.9rem;
+	font-weight: 500;
 	color: var(--text-muted);
 }
 
@@ -266,12 +298,14 @@ const getPriorityClass = (priority: string) => {
 .input-error {
 	border-color: #ff4d4f;
 }
+
 .error-message {
 	color: #ff4d4f;
 	font-size: 0.8rem;
 	margin-top: 4px;
 	display: block;
 }
+
 .btn-primary:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
@@ -285,13 +319,13 @@ const getPriorityClass = (priority: string) => {
 }
 
 .tag-button {
-	padding: 0.4rem 0.8rem;
+	padding: 0.5rem 1rem;
 	border: 1px solid var(--glass-border);
 	background: var(--input-bg);
 	color: var(--text-muted);
 	border-radius: 12px;
 	cursor: pointer;
-	font-size: 0.875rem;
+	font-size: 0.9rem;
 	transition: all 0.2s;
 }
 
@@ -320,6 +354,7 @@ const getPriorityClass = (priority: string) => {
 	font-size: 0.75rem;
 	font-weight: 500;
 }
+
 .priority-low {
 	background: #10b981 !important;
 	border-color: #0caa76 !important;
@@ -338,5 +373,9 @@ const getPriorityClass = (priority: string) => {
 .priority-default {
 	background: #64748b !important;
 	border-color: #5a6980 !important;
+}
+
+.form-input {
+	font-size: 1rem;
 }
 </style>
