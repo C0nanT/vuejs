@@ -106,6 +106,14 @@ const toggleTag = (tag: string) => {
 	}
 };
 
+const getPriorityClass = (priority: string) => {
+	switch (priority.toLowerCase()) {
+		case 'baixa': return 'priority-low';
+		case 'média': return 'priority-medium';
+		case 'alta': return 'priority-high';
+		default: return 'priority-default';
+	}
+};
 </script>
 
 <template>
@@ -165,7 +173,10 @@ const toggleTag = (tag: string) => {
 						:key="priority"
 						type="button"
 						class="tag-button"
-						:class="{ 'tag-selected': form.priority === priority }"
+						:class="[
+							{ 'tag-selected': form.priority === priority },
+							form.priority === priority ? getPriorityClass(priority) : ''
+						]"
 						@click="form.priority = priority"
 					>
 						{{ priority }}
@@ -301,5 +312,24 @@ const toggleTag = (tag: string) => {
 	border-radius: 12px;
 	font-size: 0.75rem;
 	font-weight: 500;
+}
+.priority-low {
+	background: #10b981 !important;
+	border-color: #0caa76 !important;
+}
+
+.priority-medium {
+	background: #f59e0b !important;
+	border-color: #eb9706 !important;
+}
+
+.priority-high {
+	background: #ef4444 !important;
+	border-color: #e43c3c !important;
+}
+
+.priority-default {
+	background: #64748b !important;
+	border-color: #5a6980 !important;
 }
 </style>
