@@ -2,7 +2,8 @@
 import { reactive, watch, computed } from "vue";
 import type { Item, FormState } from "../types";
 import DatePicker from "./DatePicker.vue";
-import { ALL_PRIORITIES, ALL_TAGS } from "../data/constants";
+import AppSelect from "./AppSelect.vue";
+import { ALL_PRIORITIES, ALL_TAGS, ALL_CATEGORIES } from "../data/constants";
 
 const props = defineProps<{
 	isOpen: boolean;
@@ -147,6 +148,12 @@ const getPriorityClass = (priority: string) => {
 					@blur="touched.description = true; validateField('description')"
 				></textarea>
 				<span v-if="errors.description" class="error-message">{{ errors.description }}</span>
+			</div>
+
+			<div class="form-group">
+				<label>Categoria</label>
+				<AppSelect v-model="form.category" :options="ALL_CATEGORIES.map(c => ({ label: c, value: c }))"
+					placeholder="Selecione uma categoria" />
 			</div>
 
 			<div class="form-group">
