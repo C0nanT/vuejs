@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useSettingsStore } from "../stores/settings";
 import { User, List, SettingsIcon } from "lucide-vue-next";
 import AppSelect from "../components/AppSelect.vue";
@@ -8,15 +8,25 @@ const settings = useSettingsStore();
 const showSuccessBorder = ref(false);
 const showSuccessInterface = ref(false);
 const isInterfaceDropdownOpen = ref(false);
+const localUserName = ref(settings.userName);
 
-watch(() => settings.userName, () => {
-	showSuccessBorder.value = true;
-	setTimeout(() => {
-		showSuccessBorder.value = false;
-	}, 2000);
+onMounted(async () => {
+	await settings.fetchSettings();
+	localUserName.value = settings.userName;
 });
 
+const saveUserName = async () => {
+	if (localUserName.value !== settings.userName) {
+		await settings.updateUserName(localUserName.value);
+		showSuccessBorder.value = true;
+		setTimeout(() => {
+			showSuccessBorder.value = false;
+		}, 2000);
+	}
+};
+
 watch(() => settings.itemsPerPage, () => {
+	settings.setItemsPerPage(settings.itemsPerPage);
 	showSuccessInterface.value = true;
 	setTimeout(() => {
 		showSuccessInterface.value = false;
@@ -52,7 +62,8 @@ const itemsPerPageOptions = [
 					<div class="form-group">
 						<label>Nome do Usuário</label>
 						<input 
-							v-model.lazy="settings.userName" 
+							v-model="localUserName" 
+							@blur="saveUserName"
 							type="text" 
 							class="form-input"
 							:class="{ 'input-success': showSuccessBorder }"

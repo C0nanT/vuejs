@@ -1,6 +1,7 @@
 import type { Item, GetItemsParams, GetItemsResponse } from "../types";
 
 const API_URL = "http://localhost:3000/api/items";
+const SETTINGS_URL = "http://localhost:3000/api/settings";
 
 export const apiService = {
 	async getItems(params: GetItemsParams = {}): Promise<GetItemsResponse> {
@@ -48,6 +49,22 @@ export const apiService = {
 			method: "DELETE",
 		});
 		if (!response.ok) throw new Error("Erro ao excluir item");
+		return response.json();
+	},
+
+	async getSettings(): Promise<{ userName: string; theme: string; itemsPerPage: number }> {
+		const response = await fetch(SETTINGS_URL);
+		if (!response.ok) throw new Error("Erro ao buscar configurações");
+		return response.json();
+	},
+
+	async updateSettings(settings: { userName: string; theme: string; itemsPerPage: number }): Promise<{ userName: string; theme: string; itemsPerPage: number }> {
+		const response = await fetch(SETTINGS_URL, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(settings),
+		});
+		if (!response.ok) throw new Error("Erro ao atualizar configurações");
 		return response.json();
 	},
 };

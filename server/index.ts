@@ -10,6 +10,7 @@ const port = process.env.PORT || 3000;
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const dbName = 'vue_testes';
 const collectionName = 'items';
+const settingsCollectionName = 'settings';
 
 app.use(cors());
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use(express.json());
 let client: MongoClient;
 let db: any;
 let collection: any;
+let settingsCollection: any;
 
 async function connectDB() {
   try {
@@ -24,6 +26,7 @@ async function connectDB() {
     await client.connect();
     db = client.db(dbName);
     collection = db.collection(collectionName);
+    settingsCollection = db.collection(settingsCollectionName);
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('Failed to connect to MongoDB', error);
@@ -145,17 +148,33 @@ app.put('/api/items/:id', async (req, res) => {
   }
 });
 
-// DELETE /api/items/:id
-app.delete('/api/items/:id', async (req, res) => {
+// GET /api/settings
+app.get('/api/settings', async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
-    const result = await collection.deleteOne({ id });
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: 'Item not found' });
+    const settings = await settingsCollection.findOne({ id: 'user' });
+    if (!settings) {
+      return res.json({ userName: 'Guest', theme: 'dark', itemsPerPage: 5 });
     }
-    res.json({ success: true });
+    const { _id, ...rest } = settings;
+    res.json(rest);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete item' });
+    res.status(500).json({ error: 'Failed to fetch settings' });
+  }
+});
+
+// PUT /api/settings
+app.put('/api/settings', async (req, res) => {
+  try {
+    const updatedData = req.body;
+    const result = await settingsCollection.findOneAndUpdate(
+      { id: 'user' },
+      { $set: { ...updatedData, id: 'user' } },
+      { upsert: true, returnDocument: 'after' }
+    );
+    const { _id, ...rest } = result as any;
+    res.json(rest);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update settings' });
   }
 });
 
