@@ -24,6 +24,7 @@ import AppSidebar from "./components/AppSidebar.vue";
 	display: flex;
 	min-height: 100vh;
 	width: 100%;
+	overflow-x: hidden;
 }
 
 .main-container {
@@ -31,6 +32,9 @@ import AppSidebar from "./components/AppSidebar.vue";
 	margin-left: 260px; /* Width of sidebar */
 	padding: 2rem 3rem;
 	transition: margin-left 0.3s ease;
+	overflow-x: hidden;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .page-content {
@@ -38,13 +42,39 @@ import AppSidebar from "./components/AppSidebar.vue";
 	margin: 0 auto;
 	position: relative;
 	min-height: 400px;
+	width: 100%;
+	box-sizing: border-box;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+	.main-container {
+		padding: 1rem 1.5rem;
+	}
+}
+
+@media (max-width: 900px) {
 	.main-container {
 		margin-left: 80px;
-		padding: 1.5rem;
+		padding: 1rem;
+	}
+}
+
+@media (max-width: 640px) {
+	#app {
+		flex-direction: row;
+	}
+	
+	.main-container {
+		margin-left: 80px;
+		padding: 0.75rem;
+		flex: 1;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+	
+	.page-content {
+		max-width: 100%;
+		min-height: auto;
 	}
 }
 

@@ -117,10 +117,28 @@ const itemsPerPageOptions = [
 	backdrop-filter: blur(10px);
 	position: relative;
 	z-index: 1;
+	width: 100%;
+	box-sizing: border-box;
+	overflow: visible;
 }
 
 .settings-section.has-open-dropdown {
 	z-index: 50;
+}
+
+@media (max-width: 768px) {
+	.settings-section {
+		padding: 1.5rem;
+		gap: 1rem;
+	}
+}
+
+@media (max-width: 640px) {
+	.settings-section {
+		flex-direction: column;
+		padding: 1rem;
+		gap: 0.75rem;
+	}
 }
 
 .section-icon {
@@ -135,8 +153,16 @@ const itemsPerPageOptions = [
 	flex-shrink: 0;
 }
 
+@media (max-width: 640px) {
+	.section-icon {
+		width: 36px;
+		height: 36px;
+	}
+}
+
 .section-content {
 	flex-grow: 1;
+	overflow: visible;
 }
 
 .section-content h3 {
@@ -185,6 +211,11 @@ const itemsPerPageOptions = [
 	font-size: 1.5rem;
 	font-weight: 600;
 	margin-left: 1rem;
+}
+
+.view-container {
+	width: 100%;
+	box-sizing: border-box;
 }
 </style>
 

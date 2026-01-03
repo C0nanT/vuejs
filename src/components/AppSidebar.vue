@@ -172,26 +172,52 @@ const toggleTheme = (event: MouseEvent) => {
 	box-shadow: var(--shadow-sm);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 	.app-sidebar {
 		width: 80px;
+		height: 100vh;
+		flex-direction: column;
+	}
+	
+	.sidebar-header {
+		padding: 1rem 0.75rem;
 	}
 	
 	.logo-text, .nav-link span, .version, .toggle-text {
 		display: none;
 	}
 	
+	.sidebar-nav {
+		flex-direction: column;
+		padding: 0.5rem;
+		gap: 0.25rem;
+	}
+	
 	.nav-link, .theme-toggle-btn {
 		justify-content: center;
-		padding: 1rem;
+		padding: 0.75rem;
+		width: 48px;
+		height: 48px;
+		min-width: 48px;
+		min-height: 48px;
 	}
 	
 	.theme-switch-wrapper {
-		padding: 0;
+		padding: 0 0.25rem;
+		margin-bottom: 0.5rem;
 	}
 
 	.logo {
 		justify-content: center;
+	}
+	
+	.sidebar-footer {
+		padding: 0.75rem;
+		border-top: 1px solid var(--glass-border);
+	}
+	
+	.version {
+		display: none;
 	}
 }
 

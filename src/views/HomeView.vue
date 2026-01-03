@@ -327,6 +327,8 @@ const removeItem = async () => {
 	align-items: center;
 	margin-bottom: 2rem;
 	gap: 1.5rem;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .header-actions {
@@ -336,6 +338,7 @@ const removeItem = async () => {
 	flex: 1;
 	justify-content: flex-end;
 	flex-wrap: wrap;
+	width: 100%;
 }
 
 .sort-controls {
@@ -369,6 +372,7 @@ const removeItem = async () => {
 	position: relative;
 	max-width: 300px;
 	width: 100%;
+	min-width: 200px;
 }
 
 .search-icon {
@@ -399,22 +403,175 @@ const removeItem = async () => {
 
 .btn-primary {
 	flex-shrink: 0;
+	white-space: nowrap;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1400px) {
+	.view-header {
+		gap: 1rem;
+	}
+	
+	.header-actions {
+		gap: 0.75rem;
+	}
+	
+	.search-bar {
+		max-width: 220px;
+		min-width: 180px;
+	}
+	
+	.sort-controls {
+		min-width: 180px;
+	}
+}
+
+@media (max-width: 1450px) {
 	.view-header {
 		flex-direction: column;
 		align-items: stretch;
 		gap: 1rem;
 	}
 	
+	.view-header h2 {
+		font-size: 1.35rem;
+	}
+	
 	.header-actions {
 		flex-direction: column;
 		align-items: stretch;
+		gap: 0.75rem;
 	}
 	
 	.search-bar {
 		max-width: none;
+		width: 100%;
+	}
+	
+	.sort-controls {
+		width: 100%;
+		min-width: auto;
+	}
+	
+	.filter-controls {
+		width: 100%;
+	}
+	
+	.btn-primary {
+		width: 100%;
+	}
+}
+
+@media (max-width: 1024px) {
+	.sort-controls {
+		min-width: auto;
+		flex: 1;
+	}
+	
+	.filter-controls {
+		min-width: auto;
+		flex: 1;
+	}
+}
+
+@media (max-width: 768px) {
+	.view-header {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
+	}
+	
+	.view-header h2 {
+		font-size: 1.25rem;
+		margin: 0;
+	}
+	
+	.header-actions {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.5rem;
+		width: 100%;
+	}
+	
+	.search-bar {
+		max-width: none;
+		width: 100%;
+	}
+	
+	.sort-controls {
+		min-width: auto;
+		width: 100%;
+	}
+	
+	.sort-controls > :first-child {
+		flex: 1;
+	}
+	
+	.filter-controls {
+		width: 100%;
+	}
+	
+	.checkbox-label {
+		font-size: 0.85rem;
+	}
+	
+	.btn-primary {
+		width: 100%;
+	}
+	
+	.pagination {
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		padding: 1rem;
+	}
+	
+	.page-numbers {
+		flex-wrap: wrap;
+		justify-content: center;
+		width: 100%;
+		gap: 0.25rem;
+	}
+	
+	.page-num {
+		width: 32px;
+		height: 32px;
+		font-size: 0.8rem;
+	}
+}
+
+@media (max-width: 640px) {
+	.view-header {
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
+	}
+	
+	.view-header h2 {
+		font-size: 1.1rem;
+	}
+	
+	.header-actions {
+		gap: 0.35rem;
+	}
+	
+	.btn-primary {
+		padding: 0.5rem 1rem;
+		font-size: 0.9rem;
+	}
+	
+	.pagination {
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	
+	.page-numbers {
+		justify-content: center;
+		max-width: 100%;
+		order: 3;
+	}
+	
+	.btn-ghost {
+		flex: 1;
+		font-size: 0.9rem;
 	}
 }
 
@@ -428,6 +585,20 @@ const removeItem = async () => {
 .items-list {
 	display: grid;
 	gap: 1.5rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+	.items-list {
+		gap: 1rem;
+	}
+}
+
+@media (max-width: 640px) {
+	.items-list {
+		gap: 0.75rem;
+	}
 }
 
 .empty-state {
@@ -517,6 +688,20 @@ const removeItem = async () => {
 	transition: all 0.2s ease;
 }
 
+@media (max-width: 1450px) {
+	.checkbox-label {
+		width: 100%;
+		justify-content: center;
+		padding: 0.75rem 1rem;
+		font-size: 1rem;
+	}
+	
+	.checkbox-input {
+		width: 18px;
+		height: 18px;
+	}
+}
+
 .checkbox-label:hover {
 	border-color: var(--primary);
 	background: var(--hover-bg);
@@ -531,5 +716,11 @@ const removeItem = async () => {
 
 .checkbox-text {
 	user-select: none;
+}
+
+.view-container {
+	width: 100%;
+	box-sizing: border-box;
+	overflow-x: hidden;
 }
 </style>

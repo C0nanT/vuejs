@@ -94,12 +94,31 @@ const handleItemClick = (event: Event) => {
 	border-radius: 16px;
 	padding: 1.5rem;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: space-between;
 	align-items: center;
 	gap: 1.5rem;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	box-shadow: var(--shadow-sm);
 	animation: slideUp 0.5s ease backwards;
+	cursor: pointer;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+	.item-card {
+		padding: 1rem;
+		gap: 1rem;
+	}
+}
+
+@media (max-width: 640px) {
+	.item-card {
+		flex-direction: column;
+		padding: 1rem;
+		gap: 0.75rem;
+		align-items: flex-start;
+	}
 }
 
 .item-card:hover {
@@ -111,6 +130,15 @@ const handleItemClick = (event: Event) => {
 
 .item-info {
 	flex-grow: 1;
+	min-width: 0;
+	width: 100%;
+}
+
+@media (max-width: 640px) {
+	.item-info {
+		flex-grow: 1;
+		width: 100%;
+	}
 }
 
 .item-name {
@@ -118,6 +146,14 @@ const handleItemClick = (event: Event) => {
 	font-weight: 600;
 	margin-bottom: 0.25rem;
 	margin-top: 0.5rem;
+	word-break: break-word;
+}
+
+@media (max-width: 640px) {
+	.item-name {
+		font-size: 1.1rem;
+		margin: 0;
+	}
 }
 
 .item-desc {
@@ -128,6 +164,16 @@ const handleItemClick = (event: Event) => {
 .item-actions {
 	display: flex;
 	gap: 0.75rem;
+	flex-shrink: 0;
+	align-self: flex-start;
+}
+
+@media (max-width: 640px) {
+	.item-actions {
+		align-self: flex-end;
+		gap: 0.5rem;
+		margin-top: -1.5rem;
+	}
 }
 
 .item-tags {

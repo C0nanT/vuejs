@@ -275,6 +275,16 @@ const getPriorityClass = (priority: number) => {
 	overflow-y: auto;
 }
 
+@media (max-width: 640px) {
+	.modal-content {
+		width: 95%;
+		padding: 1.5rem 1rem;
+		max-height: calc(100vh - 100px);
+		border-radius: 16px;
+		max-width: 100%;
+	}
+}
+
 .modal-content::-webkit-scrollbar {
 	width: 8px;
 }
@@ -318,6 +328,17 @@ const getPriorityClass = (priority: number) => {
 	justify-content: flex-end;
 	gap: 1rem;
 	margin-top: 2rem;
+}
+
+@media (max-width: 640px) {
+	.modal-footer {
+		flex-direction: column-reverse;
+		gap: 0.75rem;
+	}
+	
+	.modal-footer button {
+		width: 100%;
+	}
 }
 
 .input-error {
