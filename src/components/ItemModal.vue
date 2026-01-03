@@ -2,7 +2,7 @@
 import { reactive, watch, computed } from "vue";
 import type { Item, FormState } from "../types";
 import DatePicker from "./DatePicker.vue";
-import { ALL_TAGS } from "../data/constants";
+import { ALL_PRIORITIES, ALL_TAGS } from "../data/constants";
 
 const props = defineProps<{
 	isOpen: boolean;
@@ -20,6 +20,7 @@ const form = reactive<FormState>({
 	description: "",
 	category: "Frontend",
 	tags: [],
+	priority: "Baixa",
 });
 
 const errors = reactive({
@@ -94,6 +95,8 @@ const handleSave = () => {
 
 const availableTags = ALL_TAGS;
 
+const availablePriorities = ALL_PRIORITIES;
+
 const toggleTag = (tag: string) => {
 	const index = form.tags.indexOf(tag);
 	if (index > -1) {
@@ -150,6 +153,22 @@ const toggleTag = (tag: string) => {
 						@click="toggleTag(tag)"
 					>
 						{{ tag }}
+					</button>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label>Prioridade</label>
+				<div class="tags-container">
+					<button
+						v-for="priority in availablePriorities"
+						:key="priority"
+						type="button"
+						class="tag-button"
+						:class="{ 'tag-selected': form.priority === priority }"
+						@click="form.priority = priority"
+					>
+						{{ priority }}
 					</button>
 				</div>
 			</div>
