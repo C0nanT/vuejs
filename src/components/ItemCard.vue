@@ -25,6 +25,15 @@ const formatDate = (dateString: string) => {
 	const date = new Date(dateString);
 	return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
 };
+
+const getPriorityClass = (priority: string) => {
+	switch (priority.toLowerCase()) {
+		case 'baixa': return 'priority-low';
+		case 'média': return 'priority-medium';
+		case 'alta': return 'priority-high';
+		default: return 'priority-default';
+	}
+};
 </script>
 
 <template>
@@ -35,8 +44,8 @@ const formatDate = (dateString: string) => {
 			<div v-if="item.tags && item.tags.length > 0" class="item-tags">
 				<span v-for="tag in item.tags" :key="tag" class="item-tag tag-label">{{ tag }}</span>
 				<span v-if="item.category" class="item-category tag-label">{{ item.category }}</span>
+				<span v-if="item.priority" class="tag-label" :class="getPriorityClass(item.priority)">{{ item.priority }}</span>
 			</div>
-			<span v-if="item.priority" class="tag-label">{{ item.priority }}</span>
 			<div v-if="item.dueDate" class="item-due-date tag-label" :class="{ 'overdue': isOverdue }">
 				<Calendar :size="14" />
 				<span>{{ formatDate(item.dueDate) }}</span>
@@ -151,6 +160,22 @@ const formatDate = (dateString: string) => {
 	font-size: 0.75rem;
 	font-weight: 500;
 	width: fit-content;
+}
+
+.priority-low {
+	background: #10b981; /* Emerald 500 */
+}
+
+.priority-medium {
+	background: #f59e0b; /* Amber 500 */
+}
+
+.priority-high {
+	background: #ef4444; /* Red 500 */
+}
+
+.priority-default {
+	background: #64748b; /* Slate 500 */
 }
 
 </style>
