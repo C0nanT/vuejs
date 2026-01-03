@@ -68,6 +68,8 @@ app.get('/api/items', async (req, res) => {
     const sortField = sortBy as string;
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions: any = {};
+    
+    // Map 'priority' sort to 'priorityValue' (removed, priority is now number)
     if (sortField) {
       sortOptions[sortField] = sortOrder;
     } else {
@@ -124,6 +126,8 @@ app.put('/api/items/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const updatedData = req.body;
+    
+    // priorityValue update logic not needed anymore
     const result = await collection.findOneAndUpdate(
       { id },
       { $set: updatedData },

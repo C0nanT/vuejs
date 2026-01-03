@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { Pencil, Trash2, Calendar } from "lucide-vue-next";
 import type { Item } from "../types";
+import { PRIORITY_MAP } from "../data/constants";
 
 const props = defineProps<{
 	item: Item;
@@ -26,13 +27,18 @@ const formatDate = (dateString: string) => {
 	return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
 };
 
-const getPriorityClass = (priority: string) => {
-	switch (priority.toLowerCase()) {
-		case 'baixa': return 'priority-low';
-		case 'média': return 'priority-medium';
-		case 'alta': return 'priority-high';
+const getPriorityClass = (priority: number) => {
+	switch (priority) {
+		case PRIORITY_MAP.Baixa: return 'priority-low';
+		case PRIORITY_MAP.Média: return 'priority-medium';
+		case PRIORITY_MAP.Alta: return 'priority-high';
 		default: return 'priority-default';
 	}
+};
+
+const getPriorityLabel = (priority: number) => {
+	const entry = Object.entries(PRIORITY_MAP).find(([key, value]) => value === priority);
+	return entry ? entry[0] : 'Desconhecida';
 };
 </script>
 
@@ -44,7 +50,7 @@ const getPriorityClass = (priority: string) => {
 			<div v-if="item.tags && item.tags.length > 0" class="item-tags">
 				<span v-for="tag in item.tags" :key="tag" class="item-tag tag-label">{{ tag }}</span>
 				<span v-if="item.category" class="item-category tag-label">{{ item.category }}</span>
-				<span v-if="item.priority" class="tag-label" :class="getPriorityClass(item.priority)">{{ item.priority }}</span>
+				<span v-if="item.priority" class="tag-label" :class="getPriorityClass(item.priority)">{{ getPriorityLabel(item.priority) }}</span>
 			</div>
 			<div v-if="item.dueDate" class="item-due-date tag-label" :class="{ 'overdue': isOverdue }">
 				<Calendar :size="14" />

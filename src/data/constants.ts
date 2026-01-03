@@ -5,6 +5,12 @@ export const ALL_TAGS = [
 	"Público",
 	"Outros",
 ] as const;
+export const PRIORITY_MAP = {
+	Baixa: 1,
+	Média: 2,
+	Alta: 3,
+} as const;
+
 export const ALL_PRIORITIES = ["Baixa", "Média", "Alta"] as const;
 export const ALL_CATEGORIES = [
 	"Frontend",
@@ -17,5 +23,5 @@ export const ALL_CATEGORIES = [
 ] as const;
 
 export type Tag = (typeof ALL_TAGS)[number];
-export type Priority = (typeof ALL_PRIORITIES)[number];
+export type Priority = (typeof PRIORITY_MAP)[keyof typeof PRIORITY_MAP];
 export type Category = (typeof ALL_CATEGORIES)[number];

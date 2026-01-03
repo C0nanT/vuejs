@@ -54,16 +54,17 @@ const generateItems = (count: number = 50): Item[] => {
 			dueDate = date.toISOString().split("T")[0]; // YYYY-MM-DD format
 		}
 
-		// Gera prioridade aleatória
-		const priority =
-			allPriorities[Math.floor(Math.random() * allPriorities.length)];
+
+
+		// Gera prioridade aleatória (1, 2 ou 3)
+		const priority = Math.floor(Math.random() * 3) + 1;
 
 		items.push({
 			id: i,
 			name: `${title} ${subject}`,
 			description: `Descrição detalhada do passo ${i} relacionado a ${subject} na categoria ${category}.`,
 			category: `${category}`,
-			priority: `${priority}`,
+			priority,
 			tags,
 			dueDate,
 			createdAt: new Date().toISOString(),

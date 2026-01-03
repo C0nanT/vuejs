@@ -3,7 +3,7 @@ import { reactive, watch, computed } from "vue";
 import type { Item, FormState } from "../types";
 import DatePicker from "./DatePicker.vue";
 import AppSelect from "./AppSelect.vue";
-import { ALL_PRIORITIES, ALL_TAGS, ALL_CATEGORIES } from "../data/constants";
+import { ALL_TAGS, ALL_CATEGORIES, PRIORITY_MAP } from "../data/constants";
 
 const props = defineProps<{
 	isOpen: boolean;
@@ -21,7 +21,7 @@ const form = reactive<FormState>({
 	description: "",
 	category: "Frontend",
 	tags: [],
-	priority: "Baixa",
+	priority: PRIORITY_MAP.Baixa,
 });
 
 const errors = reactive({
@@ -108,7 +108,7 @@ const handleSave = () => {
 
 const availableTags = ALL_TAGS;
 
-const availablePriorities = ALL_PRIORITIES;
+const availablePriorities = Object.entries(PRIORITY_MAP);
 
 const toggleTag = (tag: string) => {
 	const index = form.tags.indexOf(tag);
@@ -119,13 +119,13 @@ const toggleTag = (tag: string) => {
 	}
 };
 
-const getPriorityClass = (priority: string) => {
-	switch (priority.toLowerCase()) {
-		case "baixa":
+const getPriorityClass = (priority: number) => {
+	switch (priority) {
+		case PRIORITY_MAP.Baixa:
 			return "priority-low";
-		case "média":
+		case PRIORITY_MAP.Média:
 			return "priority-medium";
-		case "alta":
+		case PRIORITY_MAP.Alta:
 			return "priority-high";
 		default:
 			return "priority-default";
@@ -205,19 +205,19 @@ const getPriorityClass = (priority: string) => {
 				<label>Prioridade</label>
 				<div class="tags-container">
 					<button
-						v-for="priority in availablePriorities"
-						:key="priority"
+						v-for="[label, value] in availablePriorities"
+						:key="value"
 						type="button"
 						class="tag-button"
 						:class="[
-							{ 'tag-selected': form.priority === priority },
-							form.priority === priority
-								? getPriorityClass(priority)
+							{ 'tag-selected': form.priority === value },
+							form.priority === value
+								? getPriorityClass(value)
 								: '',
 						]"
-						@click="form.priority = priority"
+						@click="form.priority = value"
 					>
-						{{ priority }}
+						{{ label }}
 					</button>
 				</div>
 			</div>
